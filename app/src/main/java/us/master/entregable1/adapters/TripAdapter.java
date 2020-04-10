@@ -16,6 +16,7 @@ import java.util.List;
 import us.master.entregable1.DetailsTripActivity;
 import us.master.entregable1.R;
 import us.master.entregable1.entity.Trip;
+import com.squareup.picasso.Picasso;
 
 public class TripAdapter  extends
         RecyclerView.Adapter<TripAdapter.ViewHolder> {
@@ -44,12 +45,12 @@ public class TripAdapter  extends
 
         textViewTitle.setText(trip.getTitle());
         textViewDescription.setText("Price: "+ trip.getPrice() + "€." + trip.getDescription());
-//        Picasso.get()
-//                .load(trip.getImgUrl())
-//                .placeholder(R.drawable.ic_sun)
-//                .error(R.drawable.ic_sun)
-//                .resize(100, 100)
-//                .into(imageView);
+        Picasso.get()
+                .load(trip.getImgUrl())
+                .placeholder(R.drawable.ic_sun)
+                .error(R.drawable.ic_sun)
+                .resize(100, 100)
+                .into(imageView);
 
         holder.tripView.setOnClickListener(new View.OnClickListener() {
             @Override

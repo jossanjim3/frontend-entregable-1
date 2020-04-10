@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import us.master.entregable1.entity.Trip;
+import com.squareup.picasso.Picasso;
 
 public class DetailsTripActivity extends AppCompatActivity {
 
@@ -39,11 +40,11 @@ public class DetailsTripActivity extends AppCompatActivity {
 
         textViewDescription.setText(trip.getDescription());
 
-//        Picasso.get()
-//                .load(trip.getImgUrl())
-//                .placeholder(R.drawable.ic_sun)
-//                .error(R.drawable.ic_sun)
-//                .resize(400, 400)
-//                .into(imageView);
+        Picasso.get()
+                .load(trip.getImgUrl())
+                .placeholder(R.drawable.ic_sun)
+                .error(R.drawable.ic_sun)
+                .resize(400, 400)
+                .into(imageView);
     }
 }
