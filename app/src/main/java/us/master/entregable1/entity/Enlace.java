@@ -17,14 +17,17 @@ public class Enlace {
     }
 
     public String getDescripcion() {
+
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
+
         this.descripcion = descripcion;
     }
 
     public int getRecursoImageView() {
+
         return recursoImageView;
     }
 
@@ -42,7 +45,10 @@ public class Enlace {
 
     public static ArrayList<Enlace> getMenu(){
         ArrayList<Enlace> menu = new ArrayList<Enlace>();
-        menu.add(new Enlace("Listado de viajes", R.drawable.ic_airplanemode_active_black_24dp, ListTripsActivity.class));
+
+        menu.add(new Enlace("Viajes", R.drawable.ic_place_24dp, ListTripsActivity.class));
+        menu.add(new Enlace("Favoritos", R.drawable.favorite_start_24dp, ListTripsActivity.class));
+
         return menu;
     }
 }
