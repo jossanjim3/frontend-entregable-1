@@ -10,12 +10,13 @@ import java.util.concurrent.ThreadLocalRandom;
 import us.master.entregable1.Constantes;
 
 public class Trip implements Serializable {
-    private String title, description, imgUrl;
+    private String origen, destino, description, imgUrl;
     private Date startDate, endDate;
     private float price;
 
-    public Trip(String title, String description, String imgUrl, Date startDate, Date endDate, float price) {
-        this.title = title;
+    public Trip(String destino, String origen, String description, String imgUrl, Date startDate, Date endDate, float price) {
+        this.destino = destino;
+        this.origen = origen;
         this.description = description;
         this.imgUrl = imgUrl;
         this.startDate = startDate;
@@ -27,64 +28,60 @@ public class Trip implements Serializable {
 
     }
 
-    public String getTitle() {
-
-        return title;
+    public String getOrigen() {
+        return origen;
     }
 
-    public void setTitle(String title) {
+    public void setOrigen(String origen) {
+        this.origen = origen;
+    }
 
-        this.title = title;
+    public String getDestino() {
+        return destino;
+    }
+
+    public void setDestino(String destino) {
+        this.destino = destino;
     }
 
     public String getDescription() {
-
         return description;
     }
 
     public void setDescription(String description) {
-
         this.description = description;
     }
 
     public String getImgUrl() {
-
         return imgUrl;
     }
 
     public void setImgUrl(String imgUrl) {
-
         this.imgUrl = imgUrl;
     }
 
-    public float getPrice() {
-
-        return price;
-    }
-
-    public void setPrice(float price) {
-
-        this.price = price;
-    }
-
     public Date getStartDate() {
-
         return startDate;
     }
 
     public void setStartDate(Date startDate) {
-
         this.startDate = startDate;
     }
 
     public Date getEndDate() {
-
         return endDate;
     }
 
     public void setEndDate(Date endDate) {
-
         this.endDate = endDate;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
     }
 
     // generar viajes aleatoriamente
@@ -107,13 +104,13 @@ public class Trip implements Serializable {
             calendar.add(Calendar.DAY_OF_YEAR,rd.nextInt(2,13));
 
             Trip tmp = new Trip();
-            tmp.setTitle(Constantes.ciudades[r.nextInt(Constantes.ciudades.length)]);
-            tmp.setDescription(Constantes.lugarSalida[r.nextInt(6)]);
+            tmp.setDestino(Constantes.ciudades[r.nextInt(Constantes.ciudades.length)]);
+            tmp.setOrigen(Constantes.lugarSalida[r.nextInt(6)]);
             tmp.setImgUrl(Constantes.urlImagenes[r.nextInt(7)]);
             tmp.setStartDate(rDate);
             tmp.setEndDate(calendar.getTime());
             tmp.setPrice(r.nextFloat()*1000);
-
+            tmp.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
             trips.add(tmp);
         }
         return trips;

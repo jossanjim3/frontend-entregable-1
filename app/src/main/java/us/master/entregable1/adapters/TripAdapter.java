@@ -41,11 +41,12 @@ public class TripAdapter  extends
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Trip trip = mTrips.get(position);
-        TextView textViewTitle = holder.textViewTitle;
+        TextView textViewDestino = holder.textViewDestino;
         TextView textViewDescription = holder.textViewDescription;
         ImageView imageView = holder.imageView;
 
-        textViewTitle.setText("Destino: " + trip.getTitle());
+        // destino
+        textViewDestino.setText("Destino: " + trip.getDestino());
 
         // description
         StringBuilder sb_desc = new StringBuilder();
@@ -55,7 +56,7 @@ public class TripAdapter  extends
         sb_desc.append("Precio: " + df.format(trip.getPrice()) + "€");
         sb_desc.append("\n");
 
-        sb_desc.append("Origen: " + trip.getDescription());
+        sb_desc.append("Origen: " + trip.getOrigen());
 
         textViewDescription.setText(sb_desc.toString());
 
@@ -84,14 +85,14 @@ public class TripAdapter  extends
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView textViewTitle, textViewDescription;
+        private TextView textViewDestino, textViewDescription;
         private ImageView imageView;
         private View tripView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tripView = itemView;
-            textViewTitle = itemView.findViewById(R.id.textViewTitle);
-            textViewDescription = itemView.findViewById(R.id.textViewPrice);
+            textViewDestino = itemView.findViewById(R.id.textViewDestino);
+            textViewDescription = itemView.findViewById(R.id.textViewPrecio);
             imageView = itemView.findViewById(R.id.imageViewTrip);
         }
     }

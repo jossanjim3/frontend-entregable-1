@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">acme-explorer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -19,5 +20,6 @@
     <string name="start_date">Start Date</string>
     <string name="date_of_arrival">Fecha de llegada</string>
     <string name="date_of_departure">Fecha de salida</string>
-    <string name="description">Origen</string>
+    <string name="description">Descripción</string>
+    <string name="origen">Origen</string>
 </resources>

@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <!-- Title View -->
+    <!-- Destino View -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,8 +31,35 @@
             android:textColor="@android:color/secondary_text_light"
             android:textStyle="bold"></TextView>
 
+
         <TextView
-            android:id="@+id/textViewTitle"
+            android:id="@+id/textViewDestino"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+        </TextView>
+    </LinearLayout>
+
+    <!-- Origen View -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="@string/origen"
+            android:textColor="@android:color/secondary_text_light"
+            android:textStyle="bold"></TextView>
+
+
+        <TextView
+            android:id="@+id/textViewOrigen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1">
@@ -57,7 +84,7 @@
             android:textStyle="bold"></TextView>
 
         <TextView
-            android:id="@+id/textViewPrice"
+            android:id="@+id/textViewPrecio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1">
@@ -124,7 +151,7 @@
         android:textStyle="bold"></TextView>
 
     <TextView
-        android:id="@+id/textViewDescription"
+        android:id="@+id/textViewDescripcion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"

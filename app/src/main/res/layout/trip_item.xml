@@ -27,13 +27,13 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textViewTitle"
+                android:id="@+id/textViewDestino"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView" />
 
             <TextView
-                android:id="@+id/textViewPrice"
+                android:id="@+id/textViewPrecio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView" />

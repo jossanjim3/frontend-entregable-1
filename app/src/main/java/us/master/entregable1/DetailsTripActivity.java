@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso;
 
 public class DetailsTripActivity extends AppCompatActivity {
 
-    private TextView textViewTitle, textViewPrice, textViewStartDate, textViewEndDate, textViewDescription;
+    private TextView textViewDestino, textViewOrigen, textViewPrice, textViewStartDate, textViewEndDate, textViewDescription;
     private ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,18 +24,22 @@ public class DetailsTripActivity extends AppCompatActivity {
         setContentView(R.layout.activity_details_trip);
 
         imageView = findViewById(R.id.imageViewTripDetail);
-        textViewTitle = findViewById(R.id.textViewTitle);
-        textViewPrice = findViewById(R.id.textViewPrice);
+        textViewDestino = findViewById(R.id.textViewDestino);
+        textViewOrigen = findViewById(R.id.textViewOrigen);
+        textViewPrice = findViewById(R.id.textViewPrecio);
         textViewStartDate = findViewById(R.id.textViewStartDate);
         textViewEndDate = findViewById(R.id.textViewEndDate);
-        textViewDescription = findViewById(R.id.textViewDescription);
+        textViewDescription = findViewById(R.id.textViewDescripcion);
 
         // Recovering data from intent extra
         Intent intent = getIntent();
         Trip trip = (Trip) intent.getSerializableExtra("trip");
 
         // destino
-        textViewTitle.setText(trip.getTitle());
+        textViewDestino.setText(trip.getDestino());
+
+        // origen
+        textViewOrigen.setText(trip.getOrigen());
 
         // precio
         DecimalFormat dfp = new DecimalFormat("#.##");
