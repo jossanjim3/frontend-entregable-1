@@ -23,6 +23,10 @@ public class Trip implements Serializable {
         this.price = price;
     }
 
+    public Trip() {
+
+    }
+
     public String getTitle() {
 
         return title;
@@ -83,26 +87,34 @@ public class Trip implements Serializable {
         this.endDate = endDate;
     }
 
+    // generar viajes aleatoriamente
     public static ArrayList<Trip> generateTrips(){
         ArrayList<Trip> trips = new ArrayList<Trip>();
+
         Random r = new Random();
-        ThreadLocalRandom rd =ThreadLocalRandom.current();
+        ThreadLocalRandom rd = ThreadLocalRandom.current();
         Calendar calendar = Calendar.getInstance();
 
         Date fechaInicio = new Date();
         calendar.setTime(fechaInicio);
         calendar.add(Calendar.MONTH, 3);
         Date fechaFin = calendar.getTime();
+
         for (int i = 0; i < 50; i++) {
+
             Date rDate = new Date(rd.nextLong(fechaInicio.getTime(), fechaFin.getTime()));
             calendar.setTime(rDate);
             calendar.add(Calendar.DAY_OF_YEAR,rd.nextInt(2,13));
-            trips.add(new Trip(Constantes.ciudades[r.nextInt(Constantes.ciudades.length)],
-                    "Lugar de salida: " + Constantes.lugarSalida[r.nextInt(6)],
-                    Constantes.urlImagenes[r.nextInt(7)],
-                    rDate,
-                    calendar.getTime(),
-                    r.nextFloat()*1000));
+
+            Trip tmp = new Trip();
+            tmp.setTitle(Constantes.ciudades[r.nextInt(Constantes.ciudades.length)]);
+            tmp.setDescription(Constantes.lugarSalida[r.nextInt(6)]);
+            tmp.setImgUrl(Constantes.urlImagenes[r.nextInt(7)]);
+            tmp.setStartDate(rDate);
+            tmp.setEndDate(calendar.getTime());
+            tmp.setPrice(r.nextFloat()*1000);
+
+            trips.add(tmp);
         }
         return trips;
     }

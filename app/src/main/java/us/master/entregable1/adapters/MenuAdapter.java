@@ -38,7 +38,7 @@ public class MenuAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         // inflate the layout for each list row
         if (convertView == null) {
             convertView = LayoutInflater.from(context).
@@ -60,7 +60,8 @@ public class MenuAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context ,currentItem.getClase());
+                Intent intent = new Intent(context, currentItem.getClase());
+                intent.putExtra("position", position);
                 context.startActivity(intent);
             }
         });

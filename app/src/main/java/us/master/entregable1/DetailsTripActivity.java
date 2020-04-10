@@ -42,8 +42,8 @@ public class DetailsTripActivity extends AppCompatActivity {
 
         Picasso.get()
                 .load(trip.getImgUrl())
-                .placeholder(R.drawable.ic_sun)
-                .error(R.drawable.ic_sun)
+                .placeholder(R.drawable.ic_place_24dp)
+                .error(R.drawable.ic_place_24dp)
                 .resize(400, 400)
                 .into(imageView);
     }

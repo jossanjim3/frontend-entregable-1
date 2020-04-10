@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
 import us.master.entregable1.adapters.TripAdapter;
@@ -25,12 +27,16 @@ public class ListTripsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_trips);
-        recyclerView=findViewById(R.id.recyclerViewTrips);
-        trips=Trip.generateTrips();
+
+        // listado de trips
+        recyclerView = findViewById(R.id.recyclerViewTrips);
+        trips = Trip.generateTrips();
+
         TripAdapter adapter = new TripAdapter(trips);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this,1));
 
+        // boton columnas, 1 o 2 columnas
         columns = findViewById(R.id.columns);
         columns.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,11 +49,13 @@ public class ListTripsActivity extends AppCompatActivity {
             }
         });
 
+        // TODO
+        // boton de filtro
         filter = findViewById(R.id.layoutFilter);
         filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO : Filter View saving in shared preferences
+                Toast.makeText(getApplicationContext(),"Filtro", Toast.LENGTH_SHORT).show();
             }
         });
     }

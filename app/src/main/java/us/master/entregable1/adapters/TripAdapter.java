@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import us.master.entregable1.DetailsTripActivity;
@@ -43,12 +45,25 @@ public class TripAdapter  extends
         TextView textViewDescription = holder.textViewDescription;
         ImageView imageView = holder.imageView;
 
-        textViewTitle.setText(trip.getTitle());
-        textViewDescription.setText("Price: "+ trip.getPrice() + "€." + trip.getDescription());
+        textViewTitle.setText("Destino: " + trip.getTitle());
+
+        // description
+        StringBuilder sb_desc = new StringBuilder();
+
+        DecimalFormat df = new DecimalFormat("#.##");
+        df.setRoundingMode(RoundingMode.CEILING);
+        sb_desc.append("Precio: " + df.format(trip.getPrice()) + "€");
+        sb_desc.append("\n");
+
+        sb_desc.append("Origen: " + trip.getDescription());
+
+        textViewDescription.setText(sb_desc.toString());
+
+        // imagen
         Picasso.get()
                 .load(trip.getImgUrl())
-                .placeholder(R.drawable.ic_sun)
-                .error(R.drawable.ic_sun)
+                .placeholder(R.drawable.ic_place_24dp)
+                .error(R.drawable.ic_place_24dp)
                 .resize(100, 100)
                 .into(imageView);
 
