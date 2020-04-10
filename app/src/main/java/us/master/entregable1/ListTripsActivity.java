@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -28,9 +29,21 @@ public class ListTripsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_trips);
 
-        // listado de trips
+        // Recovering data from intent extra
+        Intent intent = getIntent();
+        int position_enlace = (int) intent.getSerializableExtra("position_enlace");
+        // Toast.makeText(getApplicationContext(),"position: " + position_enlace, Toast.LENGTH_SHORT).show();
+
         recyclerView = findViewById(R.id.recyclerViewTrips);
-        trips = Trip.generateTrips();
+
+        // diferenciamos si son viajes favoritos o no
+        if (position_enlace == 0) {
+            // listado de trips aleatorio
+            trips = Trip.generateTrips();
+        } else {
+            // listado de trips favoritos
+            trips = new ArrayList<Trip>();
+        }
 
         TripAdapter adapter = new TripAdapter(trips);
         recyclerView.setAdapter(adapter);

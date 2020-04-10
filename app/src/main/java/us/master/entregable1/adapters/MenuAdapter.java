@@ -61,7 +61,7 @@ public class MenuAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, currentItem.getClase());
-                intent.putExtra("position", position);
+                intent.putExtra("position_enlace", position);
                 context.startActivity(intent);
             }
         });
