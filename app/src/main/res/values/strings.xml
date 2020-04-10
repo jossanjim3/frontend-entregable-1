@@ -22,4 +22,9 @@
     <string name="date_of_departure">Fecha de salida</string>
     <string name="description">Descripción</string>
     <string name="origen">Origen</string>
+    <string name="filtros">FILTROS</string>
+    <string name="fecha_entrada">Fecha Entrada:</string>
+    <string name="fecha_salida">Fecha Salida:</string>
+    <string name="precio_m_nimo">Precio Mínimo:</string>
+    <string name="precio_m_ximo">Precio Máximo:</string>
 </resources>

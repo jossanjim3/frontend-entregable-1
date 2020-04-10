@@ -68,7 +68,9 @@ public class ListTripsActivity extends AppCompatActivity {
         filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Filtro", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getApplicationContext(),"Filtro", Toast.LENGTH_SHORT).show();
+                Intent filterIntent = new Intent(getApplicationContext(), FilterTrips.class);
+                getApplicationContext().startActivity(filterIntent);
             }
         });
     }

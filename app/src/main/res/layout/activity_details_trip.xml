@@ -109,7 +109,7 @@
             android:textStyle="bold"></TextView>
 
         <TextView
-            android:id="@+id/textViewStartDate"
+            android:id="@+id/textViewEndDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1">
