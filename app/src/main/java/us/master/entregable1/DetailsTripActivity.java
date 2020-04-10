@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.math.RoundingMode;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
 import us.master.entregable1.entity.Trip;
@@ -30,8 +33,15 @@ public class DetailsTripActivity extends AppCompatActivity {
         // Recovering data from intent extra
         Intent intent = getIntent();
         Trip trip = (Trip) intent.getSerializableExtra("trip");
+
+        // destino
         textViewTitle.setText(trip.getTitle());
-        textViewPrice.setText(Float.toString(trip.getPrice()));
+
+        // precio
+        DecimalFormat dfp = new DecimalFormat("#.##");
+        dfp.setRoundingMode(RoundingMode.CEILING);
+        textViewPrice.setText(dfp.format(trip.getPrice()) + "€");
+
         // Format to Date String
         String pattern = "dd/MM/yyyy";
         DateFormat df = new SimpleDateFormat(pattern);
