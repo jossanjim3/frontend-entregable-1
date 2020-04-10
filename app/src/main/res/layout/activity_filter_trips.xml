@@ -20,6 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -36,7 +37,7 @@
 
             <TextView
                 android:id="@+id/textView1"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:gravity="center_horizontal|center_vertical"
@@ -45,9 +46,10 @@
             <TextView
                 android:id="@+id/textViewStartDate"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:gravity="center_horizontal|center_vertical" />
+                android:gravity="center_horizontal|center_vertical"
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/imageViewStartDate"
@@ -67,18 +69,20 @@
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="@string/fecha_salida" />
+                android:text="@string/fecha_salida"
+                android:textAlignment="center" />
 
             <TextView
                 android:id="@+id/textViewEndDate"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:gravity="center_horizontal|center_vertical" />
+                android:gravity="center_horizontal|center_vertical"
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/imageViewEndDate"
@@ -98,26 +102,21 @@
 
             <TextView
                 android:id="@+id/textView3"
-                android:layout_width="wrap_content"
+                android:layout_width="15dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="@string/precio_m_nimo" />
 
-            <TextView
+            <EditText
                 android:id="@+id/textViewMinPrice"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:gravity="center_horizontal|center_vertical" />
-
-            <ImageView
-                android:id="@+id/imageViewMinPrice"
-                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_weight="1"
-                app:srcCompat="@android:drawable/ic_menu_info_details" />
+                android:layout_weight="2"
+                android:gravity="center_horizontal|center_vertical"
+                android:textStyle="bold"
+                android:inputType="number"/>
+
         </LinearLayout>
 
         <LinearLayout
@@ -129,28 +128,33 @@
 
             <TextView
                 android:id="@+id/textView4"
-                android:layout_width="wrap_content"
+                android:layout_width="15dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="@string/precio_m_ximo" />
 
-            <TextView
+            <EditText
                 android:id="@+id/textViewMaxPrice"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:gravity="center_horizontal|center_vertical" />
-
-            <ImageView
-                android:id="@+id/imageViewMaxPrice"
-                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_weight="1"
-                app:srcCompat="@android:drawable/ic_menu_info_details" />
+                android:layout_weight="2"
+                android:gravity="center_horizontal|center_vertical"
+                android:textStyle="bold"
+                android:inputType="number"/>
+
         </LinearLayout>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/aplicar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

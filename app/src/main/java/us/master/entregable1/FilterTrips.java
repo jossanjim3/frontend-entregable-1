@@ -1,17 +1,27 @@
 package us.master.entregable1;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
+import us.master.entregable1.dialog.DatePickerFragment;
+
 public class FilterTrips extends AppCompatActivity {
 
     TextView txtViewStartDate, txtViewEndDate, txtViewMinPrice, txtViewMaxPrice;
-    ImageView imgViewStartDate, imgViewEndDate, imgViewMinPrice, imgViewMaxPrice;
+    ImageView imgViewStartDate, imgViewEndDate;
+    Button btnFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,34 +35,48 @@ public class FilterTrips extends AppCompatActivity {
 
         imgViewStartDate = findViewById(R.id.imageViewStartDate);
         imgViewEndDate = findViewById(R.id.imageViewEndDate);
-        imgViewMinPrice = findViewById(R.id.imageViewMinPrice);
-        imgViewMaxPrice = findViewById(R.id.imageViewMaxPrice);
 
         imgViewStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"start date", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getApplicationContext(),"start date", Toast.LENGTH_SHORT).show();
+                DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        // +1 because January is zero
+                        final String selectedDate = day + " / " + (month+1) + " / " + year;
+                        txtViewStartDate.setText(selectedDate);
+                    }
+                });
+
+                newFragment.show(getSupportFragmentManager(), "datePicker");
             }
         });
 
         imgViewEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"end date", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getApplicationContext(),"end date", Toast.LENGTH_SHORT).show();
+
+                DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        // +1 because January is zero
+                        final String selectedDate = day + " / " + (month+1) + " / " + year;
+                        txtViewEndDate.setText(selectedDate);
+                    }
+                });
+
+                newFragment.show(getSupportFragmentManager(), "datePicker");
             }
         });
 
-        imgViewMinPrice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"min price", Toast.LENGTH_SHORT).show();
-            }
-        });
 
-        imgViewMaxPrice.setOnClickListener(new View.OnClickListener() {
+        btnFilter = findViewById(R.id.buttonFilter);
+        btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"max price", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"button filter", Toast.LENGTH_SHORT).show();
             }
         });
 
