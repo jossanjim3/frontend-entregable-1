@@ -47,7 +47,14 @@ public class FilterTrips extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         // +1 because January is zero
-                        final String selectedDate = day + "/" + (month+1) + "/" + year;
+                        int monthAux = month+1;
+                        String monthDate = "";
+                        if (monthAux < 10){
+                            monthDate = "0"+ monthAux;
+                        } else {
+                            monthDate = "" +  monthAux;
+                        }
+                        final String selectedDate = day + "/" + monthDate + "/" + year;
                         txtViewStartDate.setText(selectedDate);
                     }
                 });
@@ -65,7 +72,14 @@ public class FilterTrips extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         // +1 because January is zero
-                        final String selectedDate = day + "/" + (month+1) + "/" + year;
+                        int monthAux = month+1;
+                        String monthDate = "";
+                        if (monthAux < 10){
+                            monthDate = "0"+ monthAux;
+                        } else {
+                            monthDate = "" +  monthAux;
+                        }
+                        final String selectedDate = day + "/" + monthDate + "/" + year;
                         txtViewEndDate.setText(selectedDate);
                     }
                 });

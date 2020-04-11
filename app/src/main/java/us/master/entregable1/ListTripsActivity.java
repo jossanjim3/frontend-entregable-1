@@ -106,68 +106,53 @@ public class ListTripsActivity extends AppCompatActivity {
 //            Log.d("JD", "MIN_PRICE: " + min_price);
 //            Log.d("JD", "MAX_PRICE: " + max_price);
 
-            if (start_date == "" && end_date == "" && min_price == "" && max_price == "") {
+            if (start_date.length() == 0 && end_date.length() == 0 && min_price.length() == 0 && max_price.length() == 0) {
                 // devuelvo la lista de todos los viajes
                 tripsFiltered = trips;
 
-            }
-
-            float minPrice;
-            if (min_price.length() > 0) {
-                minPrice = Float.parseFloat(min_price);
             } else {
-                minPrice = 0;
-            }
 
-            float maxPrice;
-            if (max_price.length() > 0) {
-                maxPrice = Float.parseFloat(max_price);
-            } else {
-                maxPrice = (float) Math.pow(10,600);
-            }
+                // asigno valores min y max price
 
-            /*
-            String string = "January 2, 2010";
-            DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
-            Date date = format.parse(string);
-            System.out.println(date); // Sat Jan 02 00:00:00 GMT 2010
-             */
-            DateFormat format = new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH);
-            Date startDate = null;
-            try {
-                if (start_date.length() > 0) {
-                    startDate = format.parse(start_date);
+                float minPrice;
+                if (min_price.length() > 0) {
+                    minPrice = Float.parseFloat(min_price);
+                } else {
+                    minPrice = 0;
                 }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
 
-            Date endDate = null;
-            try {
-                if (end_date.length() > 0) {
-                    endDate = format.parse(end_date);
+                float maxPrice;
+                if (max_price.length() > 0) {
+                    maxPrice = Float.parseFloat(max_price);
+                } else {
+                    maxPrice = (float) Math.pow(10,600);
                 }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
 
-//            Log.d("JD", "startDate: " + startDate);
-//            Log.d("JD", "endDAte: " + endDate);
-//            Log.d("JD", "minPrice: " + minPrice);
-//            Log.d("JD", "maxPrice: " + maxPrice);
+                for(Trip trip : trips) {
 
-            for(Trip trip : trips) {
+                    // min price
+                    if((Float.compare(trip.getPrice(),minPrice) > 0 ) || (Float.compare(trip.getPrice(),minPrice) == 0 )) { // f1 > f2 or f1=f2
 
-                // min price
-                if((Float.compare(trip.getPrice(),minPrice) > 0 ) || (Float.compare(trip.getPrice(),minPrice) == 0 )) { // f1 > f2 or f1=f2
-                    // max price
-                    if((Float.compare(trip.getPrice(),maxPrice) < 0 ) || (Float.compare(trip.getPrice(),maxPrice) == 0 )) { // f1 < f2 or f1=f2
-                        tripsFiltered.add(trip);
+                        // max price
+                        if((Float.compare(trip.getPrice(),maxPrice) < 0 ) || (Float.compare(trip.getPrice(),maxPrice) == 0 )) { // f1 < f2 or f1=f2
+
+                            // date
+
+                            String trip_start_date = Util.dateToString(trip.getStartDate());
+                            // Log.d("JD", "trip_start_date: " + trip_start_date);
+                            // Log.d("JD", "start_date: " + start_date);
+                            if (start_date.length() > 0 && trip_start_date.equals(start_date)) {
+                                tripsFiltered.add(trip);
+                            } else {
+                                // tripsFiltered.add(trip);
+                            }
+
+                        }
                     }
                 }
-
-
             }
+
+
 
             TripAdapter adapter = new TripAdapter(tripsFiltered);
             recyclerView.setAdapter(adapter);
