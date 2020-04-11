@@ -5,7 +5,9 @@ import androidx.fragment.app.DialogFragment;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -22,6 +24,7 @@ public class FilterTrips extends AppCompatActivity {
     TextView txtViewStartDate, txtViewEndDate, txtViewMinPrice, txtViewMaxPrice;
     ImageView imgViewStartDate, imgViewEndDate;
     Button btnFilter;
+    static final int FILTERING_REQUEST = 1;  // The request code
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +47,7 @@ public class FilterTrips extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         // +1 because January is zero
-                        final String selectedDate = day + " / " + (month+1) + " / " + year;
+                        final String selectedDate = day + "/" + (month+1) + "/" + year;
                         txtViewStartDate.setText(selectedDate);
                     }
                 });
@@ -62,7 +65,7 @@ public class FilterTrips extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         // +1 because January is zero
-                        final String selectedDate = day + " / " + (month+1) + " / " + year;
+                        final String selectedDate = day + "/" + (month+1) + "/" + year;
                         txtViewEndDate.setText(selectedDate);
                     }
                 });
@@ -76,7 +79,15 @@ public class FilterTrips extends AppCompatActivity {
         btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"button filter", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getApplicationContext(),"button filter", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent();
+                // Log.d("JD", "" +  txtViewMinPrice.getText());
+                intent.putExtra("START_DATE","" +  txtViewStartDate.getText());
+                intent.putExtra("END_DATE","" +  txtViewEndDate.getText());
+                intent.putExtra("MIN_PRICE","" +  txtViewMinPrice.getText());
+                intent.putExtra("MAX_PRICE","" +  txtViewMaxPrice.getText());
+                setResult(FILTERING_REQUEST,intent);
+                finish();//finishing activity
             }
         });
 

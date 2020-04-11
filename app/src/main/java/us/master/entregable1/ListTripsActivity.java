@@ -1,18 +1,27 @@
 package us.master.entregable1;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 import us.master.entregable1.adapters.TripAdapter;
 import us.master.entregable1.entity.Trip;
@@ -23,6 +32,8 @@ public class ListTripsActivity extends AppCompatActivity {
     ArrayList<Trip> trips;
     LinearLayout filter;
     Switch columns;
+
+    static final int FILTERING_REQUEST = 1;  // The request code
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +73,6 @@ public class ListTripsActivity extends AppCompatActivity {
             }
         });
 
-        // TODO
         // boton de filtro
         filter = findViewById(R.id.layoutFilter);
         filter.setOnClickListener(new View.OnClickListener() {
@@ -70,8 +80,99 @@ public class ListTripsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Toast.makeText(getApplicationContext(),"Filtro", Toast.LENGTH_SHORT).show();
                 Intent filterIntent = new Intent(getApplicationContext(), FilterTrips.class);
-                getApplicationContext().startActivity(filterIntent);
+                // getApplicationContext().startActivity(filterIntent);
+                startActivityForResult(filterIntent, FILTERING_REQUEST);
             }
         });
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        // check if the request code is same as what is passed
+        if(requestCode == FILTERING_REQUEST) {
+
+            ArrayList<Trip> tripsFiltered = new ArrayList<Trip>();
+
+            String start_date = data.getStringExtra("START_DATE");
+            String end_date = data.getStringExtra("END_DATE");
+            String min_price = data.getStringExtra("MIN_PRICE");
+            String max_price = data.getStringExtra("MAX_PRICE");
+
+//            Log.d("JD", "START_DATE: " + start_date);
+//            Log.d("JD", "END_DATE: " + end_date);
+//            Log.d("JD", "MIN_PRICE: " + min_price);
+//            Log.d("JD", "MAX_PRICE: " + max_price);
+
+            if (start_date == "" && end_date == "" && min_price == "" && max_price == "") {
+                // devuelvo la lista de todos los viajes
+                tripsFiltered = trips;
+
+            }
+
+            float minPrice;
+            if (min_price.length() > 0) {
+                minPrice = Float.parseFloat(min_price);
+            } else {
+                minPrice = 0;
+            }
+
+            float maxPrice;
+            if (max_price.length() > 0) {
+                maxPrice = Float.parseFloat(max_price);
+            } else {
+                maxPrice = (float) Math.pow(10,600);
+            }
+
+            /*
+            String string = "January 2, 2010";
+            DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
+            Date date = format.parse(string);
+            System.out.println(date); // Sat Jan 02 00:00:00 GMT 2010
+             */
+            DateFormat format = new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH);
+            Date startDate = null;
+            try {
+                if (start_date.length() > 0) {
+                    startDate = format.parse(start_date);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            Date endDate = null;
+            try {
+                if (end_date.length() > 0) {
+                    endDate = format.parse(end_date);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+//            Log.d("JD", "startDate: " + startDate);
+//            Log.d("JD", "endDAte: " + endDate);
+//            Log.d("JD", "minPrice: " + minPrice);
+//            Log.d("JD", "maxPrice: " + maxPrice);
+
+            for(Trip trip : trips) {
+
+                // min price
+                if((Float.compare(trip.getPrice(),minPrice) > 0 ) || (Float.compare(trip.getPrice(),minPrice) == 0 )) { // f1 > f2 or f1=f2
+                    // max price
+                    if((Float.compare(trip.getPrice(),maxPrice) < 0 ) || (Float.compare(trip.getPrice(),maxPrice) == 0 )) { // f1 < f2 or f1=f2
+                        tripsFiltered.add(trip);
+                    }
+                }
+
+
+            }
+
+            TripAdapter adapter = new TripAdapter(tripsFiltered);
+            recyclerView.setAdapter(adapter);
+
+        }
+    }
+
 }

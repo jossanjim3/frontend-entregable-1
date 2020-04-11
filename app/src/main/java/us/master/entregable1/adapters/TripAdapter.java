@@ -12,7 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.math.RoundingMode;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import us.master.entregable1.DetailsTripActivity;
@@ -57,6 +59,11 @@ public class TripAdapter  extends
         sb_desc.append("\n");
 
         sb_desc.append("Origen: " + trip.getOrigen());
+        sb_desc.append("\n");
+
+        String pattern = "dd/MM/yyyy";
+        DateFormat dfDate = new SimpleDateFormat(pattern);
+        sb_desc.append(dfDate.format(trip.getStartDate()) + " - " + dfDate.format(trip.getEndDate()));
 
         textViewDescription.setText(sb_desc.toString());
 
