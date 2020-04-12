@@ -3,6 +3,8 @@ package us.master.entregable1;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,13 +19,14 @@ import com.squareup.picasso.Picasso;
 public class DetailsTripActivity extends AppCompatActivity {
 
     private TextView textViewDestino, textViewOrigen, textViewPrice, textViewStartDate, textViewEndDate, textViewDescription;
-    private ImageView imageView;
+    private ImageView imageView, imageViewFav;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_trip);
 
         imageView = findViewById(R.id.imageViewTripDetail);
+        imageViewFav = findViewById(R.id.imageViewFav);
         textViewDestino = findViewById(R.id.textViewDestino);
         textViewOrigen = findViewById(R.id.textViewOrigen);
         textViewPrice = findViewById(R.id.textViewPrecio);
@@ -33,7 +36,7 @@ public class DetailsTripActivity extends AppCompatActivity {
 
         // Recovering data from intent extra
         Intent intent = getIntent();
-        Trip trip = (Trip) intent.getSerializableExtra("trip");
+        final Trip trip = (Trip) intent.getSerializableExtra("trip");
 
         // destino
         textViewDestino.setText(trip.getDestino());
@@ -60,5 +63,24 @@ public class DetailsTripActivity extends AppCompatActivity {
                 .error(R.drawable.ic_place_24dp)
                 .resize(400, 400)
                 .into(imageView);
+
+        // Log.d("JD", "favorito: " + trip.isFavorite());
+        if (trip.isFavorite()) {
+            imageViewFav.setImageResource(android.R.drawable.btn_star_big_on);
+        } else {
+            imageViewFav.setImageResource(android.R.drawable.btn_star_big_off);
+        }
+
+        imageViewFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (trip.isFavorite()) {
+                    imageViewFav.setImageResource(android.R.drawable.btn_star_big_off);
+                } else {
+                    imageViewFav.setImageResource(android.R.drawable.btn_star_big_on);
+                }
+            }
+        });
     }
 }
