@@ -9,6 +9,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import us.master.entregable1.entity.Trip;
+
 public class Util {
     public static String formateaFecha(Calendar calendar) {
         int yy=calendar.get(Calendar.YEAR);
@@ -58,5 +60,29 @@ public class Util {
         }
 
         return startDate;
+    }
+
+    public static void doTripFavorite (Trip t, boolean isFavorite) {
+        // buscar el viaje en la lista de trips de constantes y ponerlo a favorito o no con valor isFavorite
+        Log.d("JD", t.toString());
+
+//        int indexOfTrip = Constantes.trips.indexOf(t);
+//        Log.d("JD", "indexOfTrip: " + indexOfTrip);
+//        if (indexOfTrip != -1) {
+//            Constantes.trips.get(indexOfTrip).setFavorite(isFavorite);
+//        }
+
+        int index = 0;
+        for (Trip tt : Constantes.trips) {
+            if (tt.getOrigen().equals(t.getOrigen())
+                    && tt.getDestino().equals(t.getDestino())
+                    && tt.getPrice() == t.getPrice()
+                    && tt.getStartDate().equals(t.getStartDate())
+                    && tt.getEndDate().equals(t.getEndDate()) ) {
+                
+                Constantes.trips.get(index).setFavorite(isFavorite);
+            }
+            index++;
+        }
     }
 }

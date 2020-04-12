@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import us.master.entregable1.entity.Trip;
+
 public class SplashActivity extends AppCompatActivity {
 
     private int SPLASH_DURATION = 1000; // miliseconds
@@ -18,7 +20,9 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                Constantes.trips = Trip.generateTrips();
                 startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                finish();
             }
         },SPLASH_DURATION);
     }

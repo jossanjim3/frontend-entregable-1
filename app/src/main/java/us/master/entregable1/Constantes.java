@@ -1,5 +1,9 @@
 package us.master.entregable1;
 
+import java.util.ArrayList;
+
+import us.master.entregable1.entity.Trip;
+
 public final class Constantes {
     public final static String[] ciudades={"Tirana","Berlín","Andorra La Vieja","Ereván","Viena","Bakú","Bruselas",
             "Minsk","Sarajevo","Sofía","Praga","Zagreb","Copenhague","Bratislava","Lublijana","Madrid","Tallín",
@@ -17,4 +21,6 @@ public final class Constantes {
                                             "https://png.pngtree.com/element_pic/00/00/00/0056a3602a2cf41.jpg",
                                             "https://png.pngtree.com/element_our/sm/20180416/sm_5ad452dbaaf09.png"};
     public static final String IntentViaje ="Viaje" ;
+
+    public static ArrayList<Trip> trips = new ArrayList<Trip>();
 }

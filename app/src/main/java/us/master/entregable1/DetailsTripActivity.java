@@ -77,9 +77,14 @@ public class DetailsTripActivity extends AppCompatActivity {
 
                 if (trip.isFavorite()) {
                     imageViewFav.setImageResource(android.R.drawable.btn_star_big_off);
+                    Util.doTripFavorite(trip,false);
+                    trip.setFavorite(false);
                 } else {
                     imageViewFav.setImageResource(android.R.drawable.btn_star_big_on);
+                    Util.doTripFavorite(trip,true);
+                    trip.setFavorite(true);
                 }
+
             }
         });
     }

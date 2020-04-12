@@ -125,4 +125,17 @@ public class Trip implements Serializable {
         }
         return trips;
     }
+
+    @Override
+    public String toString() {
+        return "Trip{" +
+                "origen='" + origen + '\'' +
+                ", destino='" + destino + '\'' +
+                ", description='" + description + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", price=" + price +
+                ", isFavorite=" + isFavorite +
+                '}';
+    }
 }

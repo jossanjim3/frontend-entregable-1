@@ -47,13 +47,19 @@ public class ListTripsActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerViewTrips);
 
-        // diferenciamos si son viajes favoritos o no
+        // diferenciamos si el enlace es para viajes favoritos o no
         if (position_enlace == 0) {
-            // listado de trips aleatorio
-            trips = Trip.generateTrips();
+            // todos los viajes
+            trips = Constantes.trips;
+
         } else {
-            // listado de trips favoritos
+            // trips favoritos
             trips = new ArrayList<Trip>();
+            for (Trip t : Constantes.trips) {
+                if (t.isFavorite()) {
+                    trips.add(t);
+                }
+            }
         }
 
         TripAdapter adapter = new TripAdapter(trips);
