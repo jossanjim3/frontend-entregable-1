@@ -28,4 +28,5 @@
     <string name="precio_m_nimo">Precio Mínimo:</string>
     <string name="precio_m_ximo">Precio Máximo:</string>
     <string name="aplicar">APLICAR</string>
+    <string name="comprar">COMPRAR</string>
 </resources>

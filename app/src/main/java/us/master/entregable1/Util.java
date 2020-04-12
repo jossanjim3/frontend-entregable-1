@@ -79,7 +79,7 @@ public class Util {
                     && tt.getPrice() == t.getPrice()
                     && tt.getStartDate().equals(t.getStartDate())
                     && tt.getEndDate().equals(t.getEndDate()) ) {
-                
+
                 Constantes.trips.get(index).setFavorite(isFavorite);
             }
             index++;

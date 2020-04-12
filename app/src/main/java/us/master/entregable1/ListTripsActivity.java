@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ public class ListTripsActivity extends AppCompatActivity {
     ArrayList<Trip> trips;
     LinearLayout filter;
     Switch columns;
+    Button btnComprar;
 
     static final int FILTERING_REQUEST = 1;  // The request code
 
@@ -46,11 +48,13 @@ public class ListTripsActivity extends AppCompatActivity {
         // Toast.makeText(getApplicationContext(),"position: " + position_enlace, Toast.LENGTH_SHORT).show();
 
         recyclerView = findViewById(R.id.recyclerViewTrips);
+        btnComprar = findViewById(R.id.buttonComprar);
 
         // diferenciamos si el enlace es para viajes favoritos o no
         if (position_enlace == 0) {
             // todos los viajes
             trips = Constantes.trips;
+            btnComprar.setVisibility(View.INVISIBLE);
 
         } else {
             // trips favoritos
@@ -60,6 +64,7 @@ public class ListTripsActivity extends AppCompatActivity {
                     trips.add(t);
                 }
             }
+            btnComprar.setVisibility(View.VISIBLE);
         }
 
         TripAdapter adapter = new TripAdapter(trips);
@@ -88,6 +93,13 @@ public class ListTripsActivity extends AppCompatActivity {
                 Intent filterIntent = new Intent(getApplicationContext(), FilterTrips.class);
                 // getApplicationContext().startActivity(filterIntent);
                 startActivityForResult(filterIntent, FILTERING_REQUEST);
+            }
+        });
+
+        btnComprar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"VIAJES SELECCIONADOS COMPRADOS!!", Toast.LENGTH_SHORT).show();
             }
         });
     }
