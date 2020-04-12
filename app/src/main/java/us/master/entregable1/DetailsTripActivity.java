@@ -27,7 +27,7 @@ public class DetailsTripActivity extends AppCompatActivity {
         textViewDestino = findViewById(R.id.textViewDestino);
         textViewOrigen = findViewById(R.id.textViewOrigen);
         textViewPrice = findViewById(R.id.textViewPrecio);
-        textViewStartDate = findViewById(R.id.textViewEndDate);
+        textViewStartDate = findViewById(R.id.textViewStartDate);
         textViewEndDate = findViewById(R.id.textViewEndDate);
         textViewDescription = findViewById(R.id.textViewDescripcion);
 

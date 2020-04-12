@@ -13,8 +13,9 @@ public class Trip implements Serializable {
     private String origen, destino, description, imgUrl;
     private Date startDate, endDate;
     private float price;
+    private boolean isFavorite = false;
 
-    public Trip(String destino, String origen, String description, String imgUrl, Date startDate, Date endDate, float price) {
+    public Trip(String destino, String origen, String description, String imgUrl, Date startDate, Date endDate, float price, boolean isFavorite) {
         this.destino = destino;
         this.origen = origen;
         this.description = description;
@@ -22,6 +23,7 @@ public class Trip implements Serializable {
         this.startDate = startDate;
         this.endDate = endDate;
         this.price = price;
+        this.isFavorite = isFavorite;
     }
 
     public Trip() {
@@ -82,6 +84,14 @@ public class Trip implements Serializable {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 
     // generar viajes aleatoriamente
