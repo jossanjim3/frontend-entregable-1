@@ -54,7 +54,14 @@ public class FilterTrips extends AppCompatActivity {
                         } else {
                             monthDate = "" +  monthAux;
                         }
-                        final String selectedDate = day + "/" + monthDate + "/" + year;
+
+                        String dayDate = "";
+                        if (day < 10) {
+                            dayDate = "0" + day;
+                        } else {
+                            dayDate = Integer.toString(day);
+                        }
+                        final String selectedDate = dayDate + "/" + monthDate + "/" + year;
                         txtViewStartDate.setText(selectedDate);
                     }
                 });
@@ -79,7 +86,15 @@ public class FilterTrips extends AppCompatActivity {
                         } else {
                             monthDate = "" +  monthAux;
                         }
-                        final String selectedDate = day + "/" + monthDate + "/" + year;
+
+                        String dayDate = "";
+                        if (day < 10) {
+                            dayDate = "0" + day;
+                        } else {
+                            dayDate = Integer.toString(day);
+                        }
+
+                        final String selectedDate = dayDate + "/" + monthDate + "/" + year;
                         txtViewEndDate.setText(selectedDate);
                     }
                 });

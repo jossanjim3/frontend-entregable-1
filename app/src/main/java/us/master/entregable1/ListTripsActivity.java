@@ -96,63 +96,79 @@ public class ListTripsActivity extends AppCompatActivity {
 
             ArrayList<Trip> tripsFiltered = new ArrayList<Trip>();
 
-            String start_date = data.getStringExtra("START_DATE");
-            String end_date = data.getStringExtra("END_DATE");
-            String min_price = data.getStringExtra("MIN_PRICE");
-            String max_price = data.getStringExtra("MAX_PRICE");
+            if (data != null) {
+                String start_date = data.getStringExtra("START_DATE");
+                String end_date = data.getStringExtra("END_DATE");
+                String min_price = data.getStringExtra("MIN_PRICE");
+                String max_price = data.getStringExtra("MAX_PRICE");
 
 //            Log.d("JD", "START_DATE: " + start_date);
 //            Log.d("JD", "END_DATE: " + end_date);
 //            Log.d("JD", "MIN_PRICE: " + min_price);
 //            Log.d("JD", "MAX_PRICE: " + max_price);
 
-            if (start_date.length() == 0 && end_date.length() == 0 && min_price.length() == 0 && max_price.length() == 0) {
-                // devuelvo la lista de todos los viajes
-                tripsFiltered = trips;
+                if (start_date.length() == 0 && end_date.length() == 0 && min_price.length() == 0 && max_price.length() == 0) {
+                    // devuelvo la lista de todos los viajes
+                    tripsFiltered = trips;
 
-            } else {
-
-                // asigno valores min y max price
-
-                float minPrice;
-                if (min_price.length() > 0) {
-                    minPrice = Float.parseFloat(min_price);
                 } else {
-                    minPrice = 0;
-                }
 
-                float maxPrice;
-                if (max_price.length() > 0) {
-                    maxPrice = Float.parseFloat(max_price);
-                } else {
-                    maxPrice = (float) Math.pow(10,600);
-                }
+                    // asigno valores min y max price
 
-                for(Trip trip : trips) {
+                    float minPrice;
+                    if (min_price.length() > 0) {
+                        minPrice = Float.parseFloat(min_price);
+                    } else {
+                        minPrice = 0;
+                    }
 
-                    // min price
-                    if((Float.compare(trip.getPrice(),minPrice) > 0 ) || (Float.compare(trip.getPrice(),minPrice) == 0 )) { // f1 > f2 or f1=f2
+                    float maxPrice;
+                    if (max_price.length() > 0) {
+                        maxPrice = Float.parseFloat(max_price);
+                    } else {
+                        maxPrice = (float) Math.pow(10,600);
+                    }
 
-                        // max price
-                        if((Float.compare(trip.getPrice(),maxPrice) < 0 ) || (Float.compare(trip.getPrice(),maxPrice) == 0 )) { // f1 < f2 or f1=f2
+                    for(Trip trip : trips) {
 
-                            // date
+                        // min price
+                        if((Float.compare(trip.getPrice(),minPrice) > 0 ) || (Float.compare(trip.getPrice(),minPrice) == 0 )) { // f1 > f2 or f1=f2
 
-                            String trip_start_date = Util.dateToString(trip.getStartDate());
-                            // Log.d("JD", "trip_start_date: " + trip_start_date);
-                            // Log.d("JD", "start_date: " + start_date);
-                            if (start_date.length() > 0 && trip_start_date.equals(start_date)) {
-                                tripsFiltered.add(trip);
-                            } else {
-                                // tripsFiltered.add(trip);
+                            // max price
+                            if((Float.compare(trip.getPrice(),maxPrice) < 0 ) || (Float.compare(trip.getPrice(),maxPrice) == 0 )) { // f1 < f2 or f1=f2
+
+                                // start date y end date
+                                String trip_start_date = Util.dateToString(trip.getStartDate());
+                                String trip_end_date = Util.dateToString(trip.getEndDate());
+
+                                // Log.d("JD", "trip_start_date: " + trip_start_date);
+                                // Log.d("JD", "start_date: " + start_date);
+
+                                if (start_date.length() == 0 && end_date.length() == 0) {
+                                    // si las dos fechas estan vacias
+                                    tripsFiltered.add(trip);
+
+                                } else if (start_date.length() > 0 && end_date.length() > 0 && trip_start_date.equals(start_date) && trip_end_date.equals(end_date)) {
+                                    // si las dos fechas estan rellenas y coinciden
+                                    tripsFiltered.add(trip);
+
+                                } else if (start_date.length() > 0 && end_date.length() == 0 && trip_start_date.equals(start_date)) {
+                                    // si solo start date esta rellena y coincide
+                                    tripsFiltered.add(trip);
+
+                                } else if (start_date.length() == 0 && end_date.length() > 0 && trip_end_date.equals(end_date)) {
+                                    // si solo end date esta rellena y coincide
+                                    tripsFiltered.add(trip);
+                                } else {
+                                    // do nothing, no se incluye como viaje filtrado
+                                }
                             }
-
                         }
                     }
                 }
+            } else {
+                tripsFiltered = trips;
             }
-
-
 
             TripAdapter adapter = new TripAdapter(tripsFiltered);
             recyclerView.setAdapter(adapter);
