@@ -64,7 +64,7 @@ public class Util {
 
     public static void doTripFavorite (Trip t, boolean isFavorite) {
         // buscar el viaje en la lista de trips de constantes y ponerlo a favorito o no con valor isFavorite
-        Log.d("JD", t.toString());
+        // Log.d("JD", t.toString());
 
 //        int indexOfTrip = Constantes.trips.indexOf(t);
 //        Log.d("JD", "indexOfTrip: " + indexOfTrip);
