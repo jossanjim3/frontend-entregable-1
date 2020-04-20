@@ -33,9 +33,9 @@ public class ListTripsActivity extends AppCompatActivity {
     ArrayList<Trip> trips;
     LinearLayout filter;
     Switch columns;
-    Button btnComprar;
 
     static final int FILTERING_REQUEST = 1;  // The request code
+    int position_enlace = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,17 +44,15 @@ public class ListTripsActivity extends AppCompatActivity {
 
         // Recovering data from intent extra
         Intent intent = getIntent();
-        int position_enlace = (int) intent.getSerializableExtra("position_enlace");
+        position_enlace = (int) intent.getSerializableExtra("position_enlace");
         // Toast.makeText(getApplicationContext(),"position: " + position_enlace, Toast.LENGTH_SHORT).show();
 
         recyclerView = findViewById(R.id.recyclerViewTrips);
-        btnComprar = findViewById(R.id.buttonComprar);
 
         // diferenciamos si el enlace es para viajes favoritos o no
         if (position_enlace == 0) {
             // todos los viajes
             trips = Constantes.trips;
-            btnComprar.setVisibility(View.INVISIBLE);
 
         } else {
             // trips favoritos
@@ -64,10 +62,9 @@ public class ListTripsActivity extends AppCompatActivity {
                     trips.add(t);
                 }
             }
-            btnComprar.setVisibility(View.VISIBLE);
         }
 
-        TripAdapter adapter = new TripAdapter(trips);
+        TripAdapter adapter = new TripAdapter(trips, position_enlace);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this,1));
 
@@ -96,12 +93,6 @@ public class ListTripsActivity extends AppCompatActivity {
             }
         });
 
-        btnComprar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"VIAJES SELECCIONADOS COMPRADOS!!", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -188,7 +179,7 @@ public class ListTripsActivity extends AppCompatActivity {
                 tripsFiltered = trips;
             }
 
-            TripAdapter adapter = new TripAdapter(tripsFiltered);
+            TripAdapter adapter = new TripAdapter(tripsFiltered, position_enlace);
             recyclerView.setAdapter(adapter);
 
         }

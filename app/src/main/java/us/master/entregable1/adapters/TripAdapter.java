@@ -1,12 +1,15 @@
 package us.master.entregable1.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,11 +18,15 @@ import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
+import us.master.entregable1.Constantes;
 import us.master.entregable1.DetailsTripActivity;
 import us.master.entregable1.R;
 import us.master.entregable1.entity.Trip;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
 public class TripAdapter  extends
@@ -27,8 +34,12 @@ public class TripAdapter  extends
 
     private List<Trip> mTrips;
     private Context context;
-    public TripAdapter(List<Trip> mTrips) {
+    int position_enlace = -1;
+
+    public TripAdapter(List<Trip> mTrips, int position_enlace) {
+        // diferenciamos si el enlace es para viajes favoritos o no
         this.mTrips = mTrips;
+        this.position_enlace = position_enlace;
     }
 
     @NonNull
@@ -46,6 +57,7 @@ public class TripAdapter  extends
         TextView textViewDestino = holder.textViewDestino;
         TextView textViewDescription = holder.textViewDescription;
         ImageView imageView = holder.imageView;
+        Button btnComprar = holder.buttonComprar;
 
         // destino
         textViewDestino.setText("Destino: " + trip.getDestino());
@@ -83,6 +95,22 @@ public class TripAdapter  extends
                 context.startActivity(intent);
             }
         });
+
+        // diferenciamos si el enlace es para viajes favoritos o no
+        if (position_enlace == 0) {
+            // todos los viajes
+            btnComprar.setVisibility(View.GONE);
+        } else {
+            // trips favoritos
+            btnComprar.setVisibility(View.VISIBLE);
+        }
+        btnComprar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(v, "Viaje a " + trip.getDestino() + " añadido al carrito.", Snackbar.LENGTH_LONG)
+                        .setAction("Buy", null).show();
+            }
+        });
     }
 
     @Override
@@ -94,6 +122,7 @@ public class TripAdapter  extends
 
         private TextView textViewDestino, textViewDescription;
         private ImageView imageView;
+        private Button buttonComprar;
         private View tripView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -101,6 +130,7 @@ public class TripAdapter  extends
             textViewDestino = itemView.findViewById(R.id.textViewDestino);
             textViewDescription = itemView.findViewById(R.id.textViewPrecio);
             imageView = itemView.findViewById(R.id.imageViewTrip);
+            buttonComprar = itemView.findViewById(R.id.buttonComprar);
         }
     }
 }
