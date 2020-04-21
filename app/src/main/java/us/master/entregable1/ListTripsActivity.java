@@ -1,5 +1,6 @@
 package us.master.entregable1;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -21,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
@@ -36,6 +38,12 @@ public class ListTripsActivity extends AppCompatActivity {
 
     static final int FILTERING_REQUEST = 1;  // The request code
     int position_enlace = -1;
+
+    // para los filtros
+    Long filterMinPrice = Long.valueOf(0);
+    Long filterMaxPrice = Long.valueOf(0);
+    Long filterStartDate = Long.valueOf(0);
+    Long filterEndDate = Long.valueOf(0);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,10 +94,18 @@ public class ListTripsActivity extends AppCompatActivity {
         filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Toast.makeText(getApplicationContext(),"Filtro", Toast.LENGTH_SHORT).show();
-                Intent filterIntent = new Intent(getApplicationContext(), FilterTrips.class);
-                // getApplicationContext().startActivity(filterIntent);
-                startActivityForResult(filterIntent, FILTERING_REQUEST);
+//                Log.d("JD", "filter start activity");
+//                Log.d("JD", "filterMinPrice: " + filterMinPrice);
+//                Log.d("JD", "filterMaxPrice: " + filterMaxPrice);
+//                Log.d("JD", "filterStartDate: " + filterStartDate);
+//                Log.d("JD", "filterEndDate: " + filterEndDate);
+
+                Intent intent = new Intent(ListTripsActivity.this, FilterTrips.class);
+                intent.putExtra("MIN_PRICE",String.valueOf(filterMinPrice));
+                intent.putExtra("MAX_PRICE",String.valueOf(filterMaxPrice));
+                intent.putExtra("START_DATE",String.valueOf(filterStartDate));
+                intent.putExtra("END_DATE",String.valueOf(filterEndDate));
+                startActivityForResult(intent, FILTERING_REQUEST);
             }
         });
 
@@ -97,91 +113,111 @@ public class ListTripsActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // check if the request code is same as what is passed
-        if(requestCode == FILTERING_REQUEST) {
+//        Log.d("JD", "filter on activity result");
+//        Log.d("JD", "requestCode: " + requestCode);
+//        Log.d("JD", "resultCode: " + resultCode);
 
-            ArrayList<Trip> tripsFiltered = new ArrayList<Trip>();
+        if (requestCode == FILTERING_REQUEST) {
+//            Log.d("JD", "requestCode == FILTERING_REQUEST ->" + requestCode);
 
-            if (data != null) {
-                String start_date = data.getStringExtra("START_DATE");
-                String end_date = data.getStringExtra("END_DATE");
-                String min_price = data.getStringExtra("MIN_PRICE");
-                String max_price = data.getStringExtra("MAX_PRICE");
+            // filtro pulsando aplicar
+            if (resultCode == RESULT_OK) {
 
-//            Log.d("JD", "START_DATE: " + start_date);
-//            Log.d("JD", "END_DATE: " + end_date);
-//            Log.d("JD", "MIN_PRICE: " + min_price);
-//            Log.d("JD", "MAX_PRICE: " + max_price);
+//                Log.d("JD", "resultCode == RESULT_OK ->" + resultCode);
+                filterMinPrice = data.getLongExtra("MIN_PRICE",0);
+                filterMaxPrice = data.getLongExtra("MAX_PRICE",0);
+                filterStartDate = data.getLongExtra("START_DATE",0);
+                filterEndDate = data.getLongExtra("END_DATE",0);
 
-                if (start_date.length() == 0 && end_date.length() == 0 && min_price.length() == 0 && max_price.length() == 0) {
-                    // devuelvo la lista de todos los viajes
-                    tripsFiltered = trips;
+//                Log.d("JD", "filterMinPrice: " + filterMinPrice);
+//                Log.d("JD", "filterMaxPrice: " + filterMaxPrice);
+//                Log.d("JD", "filterStartDate: " + filterStartDate);
+//                Log.d("JD", "filterEndDate: " + filterEndDate);
 
-                } else {
-
-                    // asigno valores min y max price
-
-                    float minPrice;
-                    if (min_price.length() > 0) {
-                        minPrice = Float.parseFloat(min_price);
-                    } else {
-                        minPrice = 0;
-                    }
-
-                    float maxPrice;
-                    if (max_price.length() > 0) {
-                        maxPrice = Float.parseFloat(max_price);
-                    } else {
-                        maxPrice = (float) Math.pow(10,600);
-                    }
-
-                    for(Trip trip : trips) {
-
-                        // min price
-                        if((Float.compare(trip.getPrice(),minPrice) > 0 ) || (Float.compare(trip.getPrice(),minPrice) == 0 )) { // f1 > f2 or f1=f2
-
-                            // max price
-                            if((Float.compare(trip.getPrice(),maxPrice) < 0 ) || (Float.compare(trip.getPrice(),maxPrice) == 0 )) { // f1 < f2 or f1=f2
-
-                                // start date y end date
-                                String trip_start_date = Util.dateToString(trip.getStartDate());
-                                String trip_end_date = Util.dateToString(trip.getEndDate());
-
-                                // Log.d("JD", "trip_start_date: " + trip_start_date);
-                                // Log.d("JD", "start_date: " + start_date);
-
-                                if (start_date.length() == 0 && end_date.length() == 0) {
-                                    // si las dos fechas estan vacias
-                                    tripsFiltered.add(trip);
-
-                                } else if (start_date.length() > 0 && end_date.length() > 0 && trip_start_date.equals(start_date) && trip_end_date.equals(end_date)) {
-                                    // si las dos fechas estan rellenas y coinciden
-                                    tripsFiltered.add(trip);
-
-                                } else if (start_date.length() > 0 && end_date.length() == 0 && trip_start_date.equals(start_date)) {
-                                    // si solo start date esta rellena y coincide
-                                    tripsFiltered.add(trip);
-
-                                } else if (start_date.length() == 0 && end_date.length() > 0 && trip_end_date.equals(end_date)) {
-                                    // si solo end date esta rellena y coincide
-                                    tripsFiltered.add(trip);
-                                } else {
-                                    // do nothing, no se incluye como viaje filtrado
-                                }
-                            }
-                        }
-                    }
-                }
-            } else {
-                tripsFiltered = trips;
+                this.refreshRecycle(filterStartDate,filterEndDate,filterMinPrice,filterMaxPrice);
             }
+        } else {
+//            Log.d("JD", "requestCode else ->" + requestCode);
+            if(requestCode == 2) {
+                this.refreshRecycle(filterStartDate,filterEndDate,filterMinPrice,filterMaxPrice);
+            }
+        }
+    }
 
-            TripAdapter adapter = new TripAdapter(tripsFiltered, position_enlace);
-            recyclerView.setAdapter(adapter);
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void refreshRecycle(final Long filterStartDate, final Long filterEndDate, final Long filterMinPrice, final Long filterMaxPrice) {
+        List<Trip> filterTripsList = new ArrayList<Trip>();
 
+//        Log.d("JD", "count elements trips filter: " + filterTripsList.size());
+        for (Trip trip : trips) {
+            boolean added = false;
+
+            boolean checkMinPrice  = compruebaMinPrice(filterMinPrice, trip);
+            boolean checkMaxPrice  = compruebaMaxPrice(filterMaxPrice, trip);
+            boolean checkStartDate = compruebaStartDate(filterStartDate, trip);
+            boolean checkEndDate   = compruebaEndDate(filterEndDate, trip);
+
+//            Log.d("JD", "Trip : " + trip.getDestino() + " - check: checkMinPrice" + checkMinPrice + ", checkMaxPrice: " + checkMaxPrice + ", checkStartDate: " + checkStartDate + ", checkEndDate: " + checkEndDate);
+
+            // si no pasa algun filtro no se añade
+            if (checkMinPrice && checkMaxPrice && checkStartDate && checkEndDate) {
+                filterTripsList.add(trip);
+            }
+        }
+
+//        Log.d("JD", "count elements trips filter: " + filterTripsList.size());
+        TripAdapter adapter = new TripAdapter(filterTripsList, position_enlace);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(getBaseContext(),1));
+    }
+
+    private boolean compruebaStartDate(Long filter, Trip trip){
+        if(filter == Long.valueOf(0)){
+            return true;
+        } else {
+            if(filter <= trip.getStartDate().getTime()){
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    private boolean compruebaEndDate(Long filter, Trip trip){
+        if(filter == Long.valueOf(0)){
+            return true;
+        } else {
+            if(filter >= trip.getEndDate().getTime()){
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    private boolean compruebaMinPrice(Long filter, Trip trip){
+        if(filter == Long.valueOf(0)){
+            return true;
+        } else {
+            if(filter <= trip.getPrice()){
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    private boolean compruebaMaxPrice(Long filter, Trip trip){
+        if(filter == Long.valueOf(0)){
+            return true;
+        } else {
+            if(filter >= trip.getPrice()){
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 
