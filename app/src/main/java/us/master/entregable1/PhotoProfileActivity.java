@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -26,6 +27,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -63,7 +65,38 @@ public class PhotoProfileActivity extends AppCompatActivity {
     }
 
     private void cargarFotoPerfil() {
-        Toast.makeText(this, "Cargando foto...", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "Cargando foto perfil...", Toast.LENGTH_SHORT).show();
+        ProgressDialog progress = new ProgressDialog(this);
+        progress.setTitle("Loading");
+        progress.setMessage("Wait while loading photo profile...");
+        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+        progress.show();
+
+        com.google.firebase.storage.FirebaseStorage storage = com.google.firebase.storage.FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("photoProfile");
+
+        if (storageReference != null) {
+            storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Glide.with(PhotoProfileActivity.this).load(task.getResult())
+                                .placeholder(R.drawable.ic_launcher_background)
+                                .centerCrop().into(takePictureImagen);
+                        // takePictureImagen.setImageURI(task.getResult());
+                        // Toast.makeText(PhotoProfileActivity.this, "Foto seleccionada como foto perfil!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // no existe foto de perfil
+                        // Toast.makeText(PhotoProfileActivity.this, "No existe foto de perfil2...", Toast.LENGTH_LONG).show();
+                        takePictureImagen.setImageResource(android.R.drawable.ic_menu_camera);
+                        Snackbar.make(takePictureButton, "No existe foto de perfil...", Snackbar.LENGTH_LONG).show();
+                    }
+                    progress.dismiss();
+                }
+            });
+        } else {
+            Toast.makeText(this, "No existe foto de perfil...", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void takePicture() {
@@ -131,10 +164,16 @@ public class PhotoProfileActivity extends AppCompatActivity {
 
     private void savePictureAsProfilePhoto() {
 
-        Toast.makeText(PhotoProfileActivity.this, "Espere mientras se guarda como foto perfil...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(PhotoProfileActivity.this, "Espere mientras se guarda como foto perfil...", Toast.LENGTH_LONG).show();
+
+        ProgressDialog progress = new ProgressDialog(this);
+        progress.setTitle("Saving");
+        progress.setMessage("Wait while saving...");
+        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+        progress.show();
 
         com.google.firebase.storage.FirebaseStorage storage = com.google.firebase.storage.FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child(filePicture.getName());
+        StorageReference storageReference = storage.getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("photoProfile");
         // storageReference.delete();
         UploadTask uploadTask = storageReference.putFile(Uri.fromFile(filePicture));
         uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -152,6 +191,8 @@ public class PhotoProfileActivity extends AppCompatActivity {
                                         .centerCrop().into(takePictureImagen);
                                 // takePictureImagen.setImageURI(task.getResult());
                                 Toast.makeText(PhotoProfileActivity.this, "Foto seleccionada como foto perfil!", Toast.LENGTH_SHORT).show();
+                                // To dismiss the dialog
+                                progress.dismiss();
                             }
                         }
                     });
