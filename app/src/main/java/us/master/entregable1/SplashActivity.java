@@ -21,7 +21,8 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Constantes.trips = Trip.generateTrips();
-                startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                // startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                 finish();
             }
         },SPLASH_DURATION);
