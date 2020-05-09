@@ -40,6 +40,7 @@ public class PhotoProfileActivity extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_REQUEST = 0x512;
     private static final int WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST = 0x513;
     private String file;
+    private File filePicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,45 +120,52 @@ public class PhotoProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == TAKE_PHOTO_CODE && resultCode == RESULT_OK) {
-            File filePicture = new File(file);
+            filePicture = new File(file);
 
-            com.google.firebase.storage.FirebaseStorage storage = com.google.firebase.storage.FirebaseStorage.getInstance();
-            StorageReference storageReference = storage.getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child(filePicture.getName());
-            // storageReference.delete();
-            UploadTask uploadTask = storageReference.putFile(Uri.fromFile(filePicture));
-            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        Log.d("JD" , "Firebase storage completed: " + task.getResult().getTotalByteCount());
+            Glide.with(PhotoProfileActivity.this).load(filePicture)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .centerCrop().into(takePictureImagen);
 
-                        storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Uri> task) {
-                                if (task.isSuccessful()) {
-                                    Glide.with(PhotoProfileActivity.this).load(task.getResult())
-                                            .placeholder(R.drawable.ic_launcher_background)
-                                            .centerCrop().into(takePictureImagen);
-                                    // takePictureImagen.setImageURI(task.getResult());
-                                }
-                            }
-                        });
-
-                    }
-                }
-            });
-
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.e("JD" , "Firebase storage error: " + e.getMessage());
-                }
-            });
         }
     }
 
     private void savePictureAsProfilePhoto() {
-        Toast.makeText(this, "guardar foto pulsado", Toast.LENGTH_SHORT).show();
+
+        Toast.makeText(PhotoProfileActivity.this, "Espere mientras se guarda como foto perfil...", Toast.LENGTH_SHORT).show();
+
+        com.google.firebase.storage.FirebaseStorage storage = com.google.firebase.storage.FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child(filePicture.getName());
+        // storageReference.delete();
+        UploadTask uploadTask = storageReference.putFile(Uri.fromFile(filePicture));
+        uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                if (task.isSuccessful()) {
+                    Log.d("JD" , "Firebase storage completed: " + task.getResult().getTotalByteCount());
+
+                    storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (task.isSuccessful()) {
+                                Glide.with(PhotoProfileActivity.this).load(task.getResult())
+                                        .placeholder(R.drawable.ic_launcher_background)
+                                        .centerCrop().into(takePictureImagen);
+                                // takePictureImagen.setImageURI(task.getResult());
+                                Toast.makeText(PhotoProfileActivity.this, "Foto seleccionada como foto perfil!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+                }
+            }
+        });
+
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("JD" , "Firebase storage error: " + e.getMessage());
+            }
+        });
     }
 
     @Override
