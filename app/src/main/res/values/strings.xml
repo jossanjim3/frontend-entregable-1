@@ -63,5 +63,7 @@
     <string name="take_picture_camera_rationale_ok">Permitir</string>
     <string name="camera_not_ganted">no es posible usar la camara</string>
     <string name="storage_not_ganted">no se puede almacenar la foto</string>
+    <string name="action_profile_photo">Foto Perfil</string>
+    <string name="save_picture">GUARDAR COMO FOTO DE PERFIL</string>
 
 </resources>

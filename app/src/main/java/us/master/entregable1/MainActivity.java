@@ -3,13 +3,16 @@ package us.master.entregable1;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -64,6 +67,36 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    public void onGroupItemClick (MenuItem item) {
+        if (item.isChecked()) {
+            item.setChecked(false);
+        } else {
+            item.setChecked(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_profile_photo:
+                changeProfilePhoto();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void changeProfilePhoto() {
+        // Toast.makeText(this, "fotoooo", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(this, PhotoProfileActivity.class));
     }
 
     @Override
