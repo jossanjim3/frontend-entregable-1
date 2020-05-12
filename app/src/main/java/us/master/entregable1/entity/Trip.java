@@ -1,5 +1,7 @@
 package us.master.entregable1.entity;
 
+import com.google.firebase.firestore.DocumentId;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -10,6 +12,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import us.master.entregable1.Constantes;
 
 public class Trip implements Serializable {
+    @DocumentId
+    private String documentId;
     private String origen, destino, description, imgUrl;
     private Date startDate, endDate;
     private float price;
@@ -92,6 +96,14 @@ public class Trip implements Serializable {
 
     public void setFavorite(boolean favorite) {
         isFavorite = favorite;
+    }
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     // generar viajes aleatoriamente
