@@ -12,6 +12,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import us.master.entregable1.Constantes;
 
 public class Trip implements Serializable {
+    private int id;
+
     @DocumentId
     private String documentId;
     private String origen, destino, description, imgUrl;
@@ -30,8 +32,28 @@ public class Trip implements Serializable {
         this.isFavorite = isFavorite;
     }
 
+    public Trip(int id, String destino, String origen, String description, String imgUrl, Date startDate, Date endDate, float price, boolean isFavorite) {
+        this.id = id;
+        this.destino = destino;
+        this.origen = origen;
+        this.description = description;
+        this.imgUrl = imgUrl;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.price = price;
+        this.isFavorite = isFavorite;
+    }
+
     public Trip() {
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getOrigen() {
