@@ -40,7 +40,7 @@ public class ListTripsActivity extends AppCompatActivity {
     LinearLayout filter;
     Switch columns;
 
-    TextView txtViewNoTrips;
+    TextView txtViewNoTrips, txtViewNoTripsFav;
     Button btnNoTrips;
 
     private DataChangedListener mDataChangedListener;
@@ -62,15 +62,8 @@ public class ListTripsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_trips);
 
         txtViewNoTrips = findViewById(R.id.textViewNoTrips);
+        txtViewNoTripsFav = findViewById(R.id.textViewNoTripsFav);
         btnNoTrips = findViewById(R.id.buttonNoTrips);
-
-        if (Constantes.trips.size() > 0) {
-            txtViewNoTrips.setVisibility(View.GONE);
-            btnNoTrips.setVisibility(View.GONE);
-        } else {
-            txtViewNoTrips.setVisibility(View.VISIBLE);
-            btnNoTrips.setVisibility(View.VISIBLE);
-        }
 
         // Recovering data from intent extra
         Intent intent = getIntent();
@@ -92,6 +85,34 @@ public class ListTripsActivity extends AppCompatActivity {
                     trips.add(t);
                 }
             }
+        }
+
+        // hay viajes
+        if (trips.size() > 0 && position_enlace == 0) {
+            txtViewNoTrips.setVisibility(View.GONE);
+            txtViewNoTripsFav.setVisibility(View.GONE);
+            btnNoTrips.setVisibility(View.GONE);
+        }
+
+        // hay viajes favoritos
+        if (trips.size() > 0 && position_enlace != 0) {
+            txtViewNoTrips.setVisibility(View.GONE);
+            txtViewNoTripsFav.setVisibility(View.GONE);
+            btnNoTrips.setVisibility(View.GONE);
+        }
+
+        // no hay viajes
+        if (trips.size() == 0 && position_enlace == 0) {
+            txtViewNoTrips.setVisibility(View.VISIBLE);
+            txtViewNoTripsFav.setVisibility(View.GONE);
+            btnNoTrips.setVisibility(View.VISIBLE);
+        }
+
+        // no hay viajes favoritos
+        if (trips.size() == 0 && position_enlace != 0) {
+            txtViewNoTrips.setVisibility(View.GONE);
+            txtViewNoTripsFav.setVisibility(View.VISIBLE);
+            btnNoTrips.setVisibility(View.GONE);
         }
 
         TripAdapter adapter = new TripAdapter(trips, position_enlace);
