@@ -11,10 +11,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,6 +39,10 @@ public class ListTripsActivity extends AppCompatActivity {
     ArrayList<Trip> trips;
     LinearLayout filter;
     Switch columns;
+
+    TextView txtViewNoTrips;
+    Button btnNoTrips;
+
     private DataChangedListener mDataChangedListener;
     private ItemErrorListener mErrorListener;
     private Context context;
@@ -53,6 +60,17 @@ public class ListTripsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_trips);
+
+        txtViewNoTrips = findViewById(R.id.textViewNoTrips);
+        btnNoTrips = findViewById(R.id.buttonNoTrips);
+
+        if (Constantes.trips.size() > 0) {
+            txtViewNoTrips.setVisibility(View.GONE);
+            btnNoTrips.setVisibility(View.GONE);
+        } else {
+            txtViewNoTrips.setVisibility(View.VISIBLE);
+            btnNoTrips.setVisibility(View.VISIBLE);
+        }
 
         // Recovering data from intent extra
         Intent intent = getIntent();
@@ -110,6 +128,13 @@ public class ListTripsActivity extends AppCompatActivity {
                 intent.putExtra("START_DATE",String.valueOf(filterStartDate));
                 intent.putExtra("END_DATE",String.valueOf(filterEndDate));
                 startActivityForResult(intent, FILTERING_REQUEST);
+            }
+        });
+
+        btnNoTrips.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ListTripsActivity.this, NewTravelActivity.class));
             }
         });
 

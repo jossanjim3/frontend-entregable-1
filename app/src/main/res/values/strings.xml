@@ -70,4 +70,6 @@
     <string name="destino">Destino</string>
     <string name="empty_fields_trip">Debe rellenar todos los datos</string>
     <string name="travel_inserted">Viaje insertado correctamente.</string>
+    <string name="no_trips">No hay viajes. Pruebe a crear uno.</string>
+    <string name="save_travel_button_new">Nuevo Viaje</string>
 </resources>

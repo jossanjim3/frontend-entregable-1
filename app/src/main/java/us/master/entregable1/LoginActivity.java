@@ -129,7 +129,14 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("JD", "task.isSuccessful(): " + task.isSuccessful());
                             if (task.isSuccessful()) {
                                 FirebaseUser user = task.getResult().getUser();
+                                // login correcto
+                                ProgressDialog progress = new ProgressDialog(this);
+                                progress.setTitle("Loading Trips...");
+                                progress.setMessage("Wait while loading all your trips...");
+                                progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+                                progress.show();
                                 checkUserDatabaseLogin(user);
+                                progress.dismiss();
                             } else {
                                 showErrorDialogMail();
                             }
@@ -196,12 +203,6 @@ public class LoginActivity extends AppCompatActivity {
 
             Toast.makeText(this, String.format(getString(R.string.login_completed), user.getEmail()), Toast.LENGTH_SHORT).show();
 
-            ProgressDialog progress = new ProgressDialog(this);
-            progress.setTitle("Loading Trips...");
-            progress.setMessage("Wait while loading all your trips...");
-            progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-            progress.show();
-
             firestoreService = FirestoreService.getServiceInstance();
             firestoreService.getTravels(new OnCompleteListener<QuerySnapshot>() {
                 @Override
@@ -218,8 +219,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
             // startActivity(new Intent(this, MainActivity.class));
-
-            progress.dismiss();
             LoginActivity.this.finish();
 
 //            FirebaseDatabaseService firebaseDatabaseService = FirebaseDatabaseService.getServiceInstance();
