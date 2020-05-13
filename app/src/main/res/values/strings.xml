@@ -65,5 +65,12 @@
     <string name="storage_not_ganted">no se puede almacenar la foto</string>
     <string name="action_profile_photo">Foto Perfil</string>
     <string name="save_picture">GUARDAR COMO FOTO DE PERFIL</string>
-
+    <string name="action_new_travel">Nuevo Viaje</string>
+    <string name="new_travel_button_new">Save Travel</string>
+    <string name="destino">Destino</string>
+    <string name="empty_fields_trip">Debe rellenar todos los datos</string>
+    <string name="travel_inserted">Viaje insertado correctamente.</string>
+    <string name="no_trips">No hay viajes. Pruebe a crear uno.</string>
+    <string name="save_travel_button_new">Nuevo Viaje</string>
+    <string name="no_trips_fav">No hay viajes favoritos.</string>
 </resources>

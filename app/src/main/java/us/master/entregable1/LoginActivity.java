@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -47,6 +48,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import us.master.entregable1.entity.Trip;
+
 public class LoginActivity extends AppCompatActivity {
 
         private static final int RC_SIGN_IN = 0x152;
@@ -61,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
         private AutoCompleteTextView loginPass;
         private ValueEventListener valueEventListener;
         // private FirebaseDatabaseService firebaseDatabaseService;
+        FirestoreService firestoreService;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +129,14 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("JD", "task.isSuccessful(): " + task.isSuccessful());
                             if (task.isSuccessful()) {
                                 FirebaseUser user = task.getResult().getUser();
+                                // login correcto
+                                ProgressDialog progress = new ProgressDialog(this);
+                                progress.setTitle("Loading Trips...");
+                                progress.setMessage("Wait while loading all your trips...");
+                                progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+                                progress.show();
                                 checkUserDatabaseLogin(user);
+                                progress.dismiss();
                             } else {
                                 showErrorDialogMail();
                             }
@@ -192,11 +203,23 @@ public class LoginActivity extends AppCompatActivity {
 
             Toast.makeText(this, String.format(getString(R.string.login_completed), user.getEmail()), Toast.LENGTH_SHORT).show();
 
-            startActivity(new Intent(this, MainActivity.class));
-
+            firestoreService = FirestoreService.getServiceInstance();
+            firestoreService.getTravels(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if(task.isSuccessful()) {
+                        for (DocumentSnapshot documentSnapshot : task.getResult().getDocuments()) {
+                            Trip travel = documentSnapshot.toObject(Trip.class);
+                            Constantes.trips.add(travel);
+                            Log.d("JD", "firestore lectura: " + travel.toString());
+                        }
+                    }
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            });
+            // startActivity(new Intent(this, MainActivity.class));
             LoginActivity.this.finish();
-
-
 
 //            FirebaseDatabaseService firebaseDatabaseService = FirebaseDatabaseService.getServiceInstance();
 //

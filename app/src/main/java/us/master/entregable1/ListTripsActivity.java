@@ -1,30 +1,34 @@
 package us.master.entregable1;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Switch;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
 
 import us.master.entregable1.adapters.TripAdapter;
 import us.master.entregable1.entity.Trip;
@@ -35,6 +39,13 @@ public class ListTripsActivity extends AppCompatActivity {
     ArrayList<Trip> trips;
     LinearLayout filter;
     Switch columns;
+
+    TextView txtViewNoTrips, txtViewNoTripsFav;
+    Button btnNoTrips;
+
+    private DataChangedListener mDataChangedListener;
+    private ItemErrorListener mErrorListener;
+    private Context context;
 
     static final int FILTERING_REQUEST = 1;  // The request code
     int position_enlace = -1;
@@ -49,6 +60,10 @@ public class ListTripsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_trips);
+
+        txtViewNoTrips = findViewById(R.id.textViewNoTrips);
+        txtViewNoTripsFav = findViewById(R.id.textViewNoTripsFav);
+        btnNoTrips = findViewById(R.id.buttonNoTrips);
 
         // Recovering data from intent extra
         Intent intent = getIntent();
@@ -70,6 +85,34 @@ public class ListTripsActivity extends AppCompatActivity {
                     trips.add(t);
                 }
             }
+        }
+
+        // hay viajes
+        if (trips.size() > 0 && position_enlace == 0) {
+            txtViewNoTrips.setVisibility(View.GONE);
+            txtViewNoTripsFav.setVisibility(View.GONE);
+            btnNoTrips.setVisibility(View.GONE);
+        }
+
+        // hay viajes favoritos
+        if (trips.size() > 0 && position_enlace != 0) {
+            txtViewNoTrips.setVisibility(View.GONE);
+            txtViewNoTripsFav.setVisibility(View.GONE);
+            btnNoTrips.setVisibility(View.GONE);
+        }
+
+        // no hay viajes
+        if (trips.size() == 0 && position_enlace == 0) {
+            txtViewNoTrips.setVisibility(View.VISIBLE);
+            txtViewNoTripsFav.setVisibility(View.GONE);
+            btnNoTrips.setVisibility(View.VISIBLE);
+        }
+
+        // no hay viajes favoritos
+        if (trips.size() == 0 && position_enlace != 0) {
+            txtViewNoTrips.setVisibility(View.GONE);
+            txtViewNoTripsFav.setVisibility(View.VISIBLE);
+            btnNoTrips.setVisibility(View.GONE);
         }
 
         TripAdapter adapter = new TripAdapter(trips, position_enlace);
@@ -106,6 +149,13 @@ public class ListTripsActivity extends AppCompatActivity {
                 intent.putExtra("START_DATE",String.valueOf(filterStartDate));
                 intent.putExtra("END_DATE",String.valueOf(filterEndDate));
                 startActivityForResult(intent, FILTERING_REQUEST);
+            }
+        });
+
+        btnNoTrips.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ListTripsActivity.this, NewTravelActivity.class));
             }
         });
 
@@ -219,6 +269,22 @@ public class ListTripsActivity extends AppCompatActivity {
                 return false;
             }
         }
+    }
+
+    public void setErrorListener(ItemErrorListener itemErrorListener) {
+        mErrorListener = itemErrorListener;
+    }
+
+    public interface ItemErrorListener {
+        void onItemError(FirebaseFirestoreException error);
+    }
+
+    public void setDataChangedListener(DataChangedListener dataChangedListener) {
+        mDataChangedListener = dataChangedListener;
+    }
+
+    public interface  DataChangedListener {
+        void onDataChanged();
     }
 
 }

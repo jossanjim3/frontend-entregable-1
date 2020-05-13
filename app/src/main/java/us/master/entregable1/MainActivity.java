@@ -89,9 +89,16 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_profile_photo:
                 changeProfilePhoto();
                 return true;
+            case R.id.action_new_travel:
+                nreTravel();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void nreTravel() {
+        startActivity(new Intent(this, NewTravelActivity.class));
     }
 
     private void changeProfilePhoto() {
