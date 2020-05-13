@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import java.util.ArrayList;
+
 import us.master.entregable1.entity.Trip;
 
 public class SplashActivity extends AppCompatActivity {
@@ -20,7 +22,8 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Constantes.trips = Trip.generateTrips();
+                // Constantes.trips = Trip.generateTrips();
+                Constantes.trips = new ArrayList<>();
                 // startActivity(new Intent(SplashActivity.this,MainActivity.class));
                 startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                 finish();

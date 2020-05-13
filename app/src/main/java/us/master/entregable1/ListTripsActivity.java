@@ -1,30 +1,31 @@
 package us.master.entregable1;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Switch;
-import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
 
 import us.master.entregable1.adapters.TripAdapter;
 import us.master.entregable1.entity.Trip;
@@ -35,6 +36,9 @@ public class ListTripsActivity extends AppCompatActivity {
     ArrayList<Trip> trips;
     LinearLayout filter;
     Switch columns;
+    private DataChangedListener mDataChangedListener;
+    private ItemErrorListener mErrorListener;
+    private Context context;
 
     static final int FILTERING_REQUEST = 1;  // The request code
     int position_enlace = -1;
@@ -219,6 +223,22 @@ public class ListTripsActivity extends AppCompatActivity {
                 return false;
             }
         }
+    }
+
+    public void setErrorListener(ItemErrorListener itemErrorListener) {
+        mErrorListener = itemErrorListener;
+    }
+
+    public interface ItemErrorListener {
+        void onItemError(FirebaseFirestoreException error);
+    }
+
+    public void setDataChangedListener(DataChangedListener dataChangedListener) {
+        mDataChangedListener = dataChangedListener;
+    }
+
+    public interface  DataChangedListener {
+        void onDataChanged();
     }
 
 }

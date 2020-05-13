@@ -143,14 +143,16 @@ public class NewTravelActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<DocumentReference> task) {
                     if (task.isSuccessful()) {
                         Log.d("JD", "Trip insertado");
+                        Constantes.trips.add(trip);
+                        Toast.makeText(NewTravelActivity.this, getString(R.string.travel_inserted), Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(getBaseContext(), MainActivity.class);
                         startActivity(intent);
+                        NewTravelActivity.this.finish();
                     } else {
                         Log.d("JD", "Error al insertar Trip ");
                     }
                 }
             });
-
         }
     }
 
