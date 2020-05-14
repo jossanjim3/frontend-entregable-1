@@ -73,4 +73,6 @@
     <string name="no_trips">No hay viajes. Pruebe a crear uno.</string>
     <string name="save_travel_button_new">Nuevo Viaje</string>
     <string name="no_trips_fav">No hay viajes favoritos.</string>
+    <string name="coordinates">Coordenadas Destino</string>
+    <string name="open_weather_map_api_key">ec6f60e78b63ed246bcdd0c61908205c</string>
 </resources>

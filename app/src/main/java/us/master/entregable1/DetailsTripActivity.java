@@ -13,13 +13,24 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import us.master.entregable1.entity.Trip;
+import us.master.entregable1.resttypes.WeatherResponse;
+import us.master.entregable1.resttypes.WeatherRetrofitInterface;
+
 import com.squareup.picasso.Picasso;
 
 public class DetailsTripActivity extends AppCompatActivity {
 
-    private TextView textViewDestino, textViewOrigen, textViewPrice, textViewStartDate, textViewEndDate, textViewDescription;
+    private TextView textViewDestino, textViewOrigen, textViewPrice, textViewStartDate, textViewEndDate, textViewDescription, textViewCoord;
     private ImageView imageView, imageViewFav;
+
+    Retrofit retrofit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,10 +44,31 @@ public class DetailsTripActivity extends AppCompatActivity {
         textViewStartDate = findViewById(R.id.textViewStartDate);
         textViewEndDate = findViewById(R.id.textViewEndDate);
         textViewDescription = findViewById(R.id.textViewDescripcion);
+        textViewCoord = findViewById(R.id.textViewCoordinates);
 
         // Recovering data from intent extra
         Intent intent = getIntent();
         final Trip trip = (Trip) intent.getSerializableExtra("trip");
+
+        // recupera las coordenadas de destino de la api open weahter map
+        // TODO
+        retrofit = new Retrofit.Builder().baseUrl("https://api.openweathermap.org/").addConverterFactory(GsonConverterFactory.create()).build();
+        WeatherRetrofitInterface service = retrofit.create(WeatherRetrofitInterface.class);
+        // Call<WeatherResponse> response = service.getCurrentWeatherLatLon(37.3453150f,-5.7420074f,getString(R.string.open_weather_map_api_key));
+        Call<WeatherResponse> response = service.getCurrentWeatherCityId(2510911,getString(R.string.open_weather_map_api_key));
+        response.enqueue(new Callback<WeatherResponse>() {
+            @Override
+            public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.d("JD", "Las coordenadas son " + response.body().getCoord());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WeatherResponse> call, Throwable t) {
+                Log.d("JD", "REST: Error en la llamada. " + t.getMessage());
+            }
+        });
 
         // destino
         textViewDestino.setText(trip.getDestino());
