@@ -54,13 +54,28 @@ public class DetailsTripActivity extends AppCompatActivity {
         // TODO
         retrofit = new Retrofit.Builder().baseUrl("https://api.openweathermap.org/").addConverterFactory(GsonConverterFactory.create()).build();
         WeatherRetrofitInterface service = retrofit.create(WeatherRetrofitInterface.class);
+
+        // buscamos el id de la ciudad destino
+        Log.d("JD", "destino es: " + trip.getDestino());
+        int idCity = 0;
+        if (Constantes.idCiudades.get(trip.getDestino().toUpperCase()) != null) {
+            idCity = Constantes.idCiudades.get(trip.getDestino().toUpperCase());
+        } else {
+
+        }
+        Log.d("JD", "Buscar las coordenadas de la ciudad con id: " + idCity + ", " + trip.getDestino());
+
         // Call<WeatherResponse> response = service.getCurrentWeatherLatLon(37.3453150f,-5.7420074f,getString(R.string.open_weather_map_api_key));
-        Call<WeatherResponse> response = service.getCurrentWeatherCityId(2510911,getString(R.string.open_weather_map_api_key));
+        Call<WeatherResponse> response = service.getCurrentWeatherCityId(idCity,getString(R.string.open_weather_map_api_key));
         response.enqueue(new Callback<WeatherResponse>() {
             @Override
             public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Log.d("JD", "Las coordenadas son " + response.body().getCoord());
+                    String coorde = "[Lat:" + response.body().getCoord().getLat() + " - Long: " + response.body().getCoord().getLon() + "]";
+                    textViewCoord.setText(coorde);
+                } else {
+                    textViewCoord.setText("No disponible.");
                 }
             }
 

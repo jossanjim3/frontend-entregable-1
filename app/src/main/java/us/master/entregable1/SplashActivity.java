@@ -24,6 +24,7 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 // Constantes.trips = Trip.generateTrips();
                 Constantes.trips = new ArrayList<>();
+                Constantes.rellenaMapIdCiudad();
                 // startActivity(new Intent(SplashActivity.this,MainActivity.class));
                 startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                 finish();
