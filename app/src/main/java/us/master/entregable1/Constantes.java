@@ -1,6 +1,8 @@
 package us.master.entregable1;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import us.master.entregable1.entity.Trip;
 
@@ -23,4 +25,16 @@ public final class Constantes {
     public static final String IntentViaje ="Viaje" ;
 
     public static ArrayList<Trip> trips = new ArrayList<Trip>();
+
+    public static Map<String,Integer> idCiudades = new HashMap<String,Integer>();
+
+    public static Map<String,Integer> rellenaMapIdCiudad() {
+        idCiudades.put("SEVILLA",2510911);
+        idCiudades.put("MADRID",3117735);
+        idCiudades.put("BARCELONA",3128760);
+        idCiudades.put("MALAGA",6359472);
+        idCiudades.put("MÁLAGA",6359472);
+        idCiudades.put("LONDRES",2643741);
+        return idCiudades;
+    }
 }
