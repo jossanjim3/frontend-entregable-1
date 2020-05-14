@@ -123,7 +123,10 @@ public class NewTravelActivity extends AppCompatActivity {
         String destino = eTxtDestino.getText().toString();
         String origen = eTxtOrigen.getText().toString();
         String descrip = eTxtDescription.getText().toString();
-        Float precio = Float.parseFloat(eTxtPrecio.getText().toString());
+        Float precio = 0f;
+        if (eTxtPrecio.getText().toString().length() > 0) {
+            precio = Float.parseFloat(eTxtPrecio.getText().toString());
+        }
         Long sDate = getStartDate();
         Long eDate = getEndDate();
 
